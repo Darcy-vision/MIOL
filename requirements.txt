@@ -1,0 +1,12 @@
+imageio
+matplotlib
+numpy
+scipy
+opencv-python
+argparse
+tensorboardX
+blessings
+progressbar2
+path
+tqdm
+chardet
