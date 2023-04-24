@@ -71,7 +71,7 @@ python test_inference.py --pretrained-model sceneflow_pretrained.tar --calib-pat
 To save the depth values as `.npy` files and the depth maps as `.png` images, run with the `--output-depth` flag. 
 
 ## :candy: Visualization
-Here we show some point cloud results of the proposed **MIOL** framework on Hamlyn^[Ye M, Johns E, Handa A, et al. Self-supervised siamese learning on stereo image pairs for depth estimation in robotic surgery[J]. arXiv preprint arXiv:1705.08260, 2017.] and SCARED^[Allan M, Mcleod J, Wang C, et al. Stereo correspondence and reconstruction of endoscopic data challenge[J]. arXiv preprint arXiv:2101.01133, 2021.] datasets
+Here we show some point cloud results of the proposed **MIOL** framework on [Hamlyn](https://arxiv.org/abs/1705.08260) and [SCARED](https://arxiv.org/abs/2101.01133) datasets
 
 
 https://user-images.githubusercontent.com/131570332/233920820-c1057d58-0803-44a3-b8ca-49aa056ab538.mp4
