@@ -80,6 +80,10 @@ Here we show some results of the proposed **MIOL** framework on [Hamlyn](https:/
 
 https://user-images.githubusercontent.com/131570332/233920820-c1057d58-0803-44a3-b8ca-49aa056ab538.mp4
 
+For academic usage, the code is released under the permissive MIT license. Our intension of sharing the project is for research/personal purpose. For any commercial purpose, please contact the authors.
 
 ## :rose: Acknowledgment
-- Our code is based on [SC-SfMLearner](https://github.com/JiawangBian/SC-SfMLearner-Release).
+- Our code is based on the excellent works of [SC-SfMLearner](https://github.com/JiawangBian/SC-SfMLearner-Release) and [monodepth2](https://github.com/nianticlabs/monodepth2).
+
+## License
+For academic usage, the code is released under the permissive MIT license. Our intension of sharing the project is for research/personal purpose. For any commercial purpose, please contact the authors.
