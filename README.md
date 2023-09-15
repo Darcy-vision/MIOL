@@ -1,59 +1,6 @@
 # A fully self-supervised approach for real-time and accurate switchable depth recovery in 3D laparoscopy
 
-This repository contains the source code for our paper.
-
-## :floppy_disk: Data Description
-
-To pretrain the network **SSDNet**, you will need to download the required datasets. 
-* [Sceneflow](https://lmb.informatik.uni-freiburg.de/resources/datasets/SceneFlowDatasets.en.html) (DispNet/FlowNet2.0 dataset subsets are enough)
-
-The structure of the downloaded dataset is as follows
-
-```Shell
-├── SceneFlowSubData
-    ├── disparity_occlusions
-        ├── train
-        ├── val
-    ├── frames_cleanpass
-        ├── train
-        ├── val
-    ├── frames_disparity
-        ├── train
-        ├── val
-```
-
-To validate the **MIOL** framework, you will need to create your own test data structured as follows
-```Shell
-├── data
-    ├── test_02
-        ├── 00000.jpg
-        ├── 00001.jpg
-        ├── ...
-        ├── 00600.jpg
-        ├── calib.yaml
-    ├── test_03
-        ├── 00000.jpg
-        ├── 00001.jpg
-        ├── ...
-        ├── 00600.jpg
-```
-
-## :sunny: Setup
-We recommend using Anaconda to set up an environment
-```Shell
-cd MIOL
-conda create -n pytorch python=3.7
-conda activate pytorch
-pip install torch torchvision --index-url https://download.pytorch.org/whl/cu117
-pip install -r requirements.txt
-```
-Please modify the torch version based on your GPU. We managed to test our code on:
-- Ubuntu 18.04/20.04 with Python 3.7 and CUDA 11.1.
-- Windows 10/11 with Python 3.7 and CUDA 11.7.
-
-## :bicyclist: Training
-
-Pretrained models can be downloaded from [OneDrive](https://mailhfuteducn-my.sharepoint.com/:u:/g/personal/zjylearn_mail_hfut_edu_cn/Ecpdt7UQHWFOue7sr1QX7PoBQFYSESp2qO80VYDtubUN_g?e=T36W1c).
+The paper is under review. This repository only contains the test code and depth estimation results. The training code will be released after the paper is accepted.
 
 ## :movie_camera: Demos
 
