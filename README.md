@@ -55,13 +55,6 @@ Please modify the torch version based on your GPU. We managed to test our code o
 
 Pretrained models can be downloaded from [OneDrive](https://mailhfuteducn-my.sharepoint.com/:u:/g/personal/zjylearn_mail_hfut_edu_cn/Ecpdt7UQHWFOue7sr1QX7PoBQFYSESp2qO80VYDtubUN_g?e=T36W1c).
 
-Our model is trained on one RTX-3090 GPU using the following command. Training logs will be written to `checkpoints/log_name` which can be visualized using tensorboard.
-
-
-```Shell
-python train_STM_sceneflow_meta.py --meta-batch-size 4 -k 1 -q 1 --inner-lr 1e-4 --meta-lr 1e-4 --epochs 25 --data path_to_SceneFlowSubData/ --name log_name
-```
-
 ## :movie_camera: Demos
 
 You can demo the trained model on a sequence of stereo images. To predict depth for your dataset, run
@@ -79,8 +72,6 @@ Here we show some results of the proposed **MIOL** framework on [Hamlyn](https:/
 - Point Clouds
 
 https://user-images.githubusercontent.com/131570332/233920820-c1057d58-0803-44a3-b8ca-49aa056ab538.mp4
-
-For academic usage, the code is released under the permissive MIT license. Our intension of sharing the project is for research/personal purpose. For any commercial purpose, please contact the authors.
 
 ## :rose: Acknowledgment
 Our code is based on the excellent works of [SC-SfMLearner](https://github.com/JiawangBian/SC-SfMLearner-Release) and [monodepth2](https://github.com/nianticlabs/monodepth2).
