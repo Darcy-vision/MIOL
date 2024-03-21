@@ -1,4 +1,4 @@
-# A fully self-supervised approach for real-time and accurate switchable depth recovery in 3D laparoscopy
+# Real-Time and High-Accuracy Switchable Stereo Depth Estimation Method Utilizing Self-Supervised Online Learning Mechanism for MIS
 
 The paper is under review. This repository only contains the test code and depth estimation results. The training code will be released after the paper is accepted.
 
@@ -20,8 +20,8 @@ Here we show some results of the proposed **MIOL** framework on [Hamlyn](https:/
 
 https://user-images.githubusercontent.com/131570332/233920820-c1057d58-0803-44a3-b8ca-49aa056ab538.mp4
 
-## :rose: Acknowledgment
-Our code is based on the excellent works of [SC-SfMLearner](https://github.com/JiawangBian/SC-SfMLearner-Release) and [monodepth2](https://github.com/nianticlabs/monodepth2).
+<!-- ## :rose: Acknowledgment
+Our code is based on the excellent works of [SC-SfMLearner](https://github.com/JiawangBian/SC-SfMLearner-Release) and [monodepth2](https://github.com/nianticlabs/monodepth2). -->
 
 ## License
 For academic usage, the code is released under the permissive MIT license. Our intension of sharing the project is for research/personal purpose. For any commercial purpose, please contact the authors.
