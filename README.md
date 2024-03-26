@@ -1,7 +1,5 @@
 # Real-Time and High-Accuracy Switchable Stereo Depth Estimation Method Utilizing Self-Supervised Online Learning Mechanism for MIS
 
-The paper is under review. This repository only contains the test code and depth estimation results. The training code will be released after the paper is accepted.
-
 ## :movie_camera: Demos
 
 You can demo the trained model on a sequence of stereo images. To predict depth for your dataset, run
