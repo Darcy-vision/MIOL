@@ -1,0 +1,28 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: >-
+  Real-Time and High-Accuracy Switchable Stereo Depth
+  Estimation Method Utilizing Self-Supervised Online
+  Learning Mechanism for MIS
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Jieyu
+    family-names: Zheng
+  - given-names: Xiaojian
+    family-names: Li
+  - given-names: Xin
+    family-names: Wang
+  - given-names: Haojun
+    family-names: Wu
+  - given-names: Ling
+    family-names: Li
+  - given-names: Xiang
+    family-names: Ma
+  - given-names: Shanlin
+    family-names: Yang
+repository-code: 'https://github.com/Darcy-vision/MIOL'
