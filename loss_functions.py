@@ -1,7 +1,7 @@
 from __future__ import division
 import torch
 from torch import nn
-from inverse_warp import miccai_inverse_warp, my_inverse_warp, synthetize_newImage
+from inverse_warp import miccai_inverse_warp, synthetize_newImage
 import numpy as np
 import cv2
 
@@ -162,7 +162,6 @@ def cal_LK(left_img_rgb, right_img_rgb, intrinsics, scale, downsample):
     img_left_grey = cv2.cvtColor(left_img_rgb, cv2.COLOR_BGR2GRAY)
     img_right_grey = cv2.cvtColor(right_img_rgb, cv2.COLOR_BGR2GRAY)
     
-    # 生成像素坐标点
     h, w = img_left_grey.shape
     x_range = np.linspace(0, w, int(w/downsample), endpoint=False)
     y_range = np.linspace(0, h, int(h/downsample), endpoint=False)
@@ -174,7 +173,6 @@ def cal_LK(left_img_rgb, right_img_rgb, intrinsics, scale, downsample):
     p0 = np.vstack((X, Y)).transpose().reshape(-1, 1, 2).astype(np.float32)
     p0_norm = np.vstack((X_norm, Y_norm)).transpose().reshape(-1, 1, 2).astype(np.float32)
 
-    # LK 金字塔光流
     pt1, st, err = cv2.calcOpticalFlowPyrLK(img_left_grey, img_right_grey, p0, None, maxLevel=3, minEigThreshold=0.001)
 
     p0 = p0.reshape(int(h/downsample), int(w/downsample), 1, 2)
@@ -183,16 +181,14 @@ def cal_LK(left_img_rgb, right_img_rgb, intrinsics, scale, downsample):
     st = st.reshape(int(h/downsample), int(w/downsample)).astype(np.bool8)
     err = err.reshape(int(h/downsample), int(w/downsample))
 
-    # tangent map计算
     tangent = np.abs((pt1[:,:,0,1] - p0[:,:,0,1]) / (pt1[:,:,0,0] - p0[:,:,0,0] + 1e-6))
     right_pos_mask = pt1[:,:,0,0] > 0
     valid_mask = (tangent < 0.05) & st & right_pos_mask
-    
-    # 根据视差变化计算遮挡mask, 无需训练
+
     vis_mask = [valid_mask[:,-1:]]
-    copy_pt1_u = -pt1[:,:,:,0] # 记录左图像素对应的右图u轴位置
-    max_ = copy_pt1_u[:,-1,:] # 取最后一列
-    max_[~valid_mask[:,-1:]] = -w # 无效点直接置为-w
+    copy_pt1_u = -pt1[:,:,:,0]
+    max_ = copy_pt1_u[:,-1,:]
+    max_[~valid_mask[:,-1:]] = -w
 
     for col in range(copy_pt1_u.shape[1] - 2, -1, -1):
         cur_ = copy_pt1_u[:, col, :]

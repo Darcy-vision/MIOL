@@ -31,7 +31,7 @@ def MetaAlgorithm(args, disp_net, optimizer, tgt_img, ref_img, left_gt_disp, rig
     task_num = record_idx * tgt_img.shape[0]
     task_id = 0
 
-    # 循环task
+    # task loop
     for aa, bb, cc, dd, ee, ff, gg, hh in zip(tgt_img, ref_img, left_gt_disp, right_gt_disp,
                                         left_intrinsics, right_intrinsics, pose, pose_inv):
         # data preparation
@@ -154,7 +154,6 @@ def MetaAlgorithm(args, disp_net, optimizer, tgt_img, ref_img, left_gt_disp, rig
     optimizer.zero_grad()
     meta_batch_loss = torch.stack(task_loss).mean()
     if train:
-        # Notice the update part!
         outer_update_MAML(disp_net, meta_batch_loss)
         optimizer.step()
     task_error = np.mean(task_error)
@@ -185,10 +184,6 @@ def disp2depth(left_disps, right_disps, intrinsics, poses):
 
     real_left_disps = []
     real_right_disps = []
-    # left_mask = (left_disps <= 0).detach()
-    # right_mask = (right_disps <= 0).detach()
-    # left_disps[left_mask] = 0.01
-    # right_disps[right_mask] = 0.01
 
     for left_disp, right_disp, left_intrinsic, right_intrinsic, pose in zip(left_disps, right_disps, intrinsics[0], intrinsics[1], poses):
         left_fx = left_intrinsic[0, 0]
@@ -199,7 +194,7 @@ def disp2depth(left_disps, right_disps, intrinsics, poses):
 
         b = -pose[0, 3]  # baseline
 
-        # 检查是否存在视差为0的情况，避免backward计算出现nan
+        # avoid zero division
         real_left_disp = left_disp + right_cx - left_cx
         real_right_disp = right_disp + right_cx - left_cx
         real_left_disp[(real_left_disp <= 0).detach()] = 0.01
@@ -208,7 +203,7 @@ def disp2depth(left_disps, right_disps, intrinsics, poses):
         real_left_disps.append(real_left_disp)
         real_right_disps.append(real_right_disp)
 
-        # 公式为 fx * baseline / [(u_left - u_right) - (cx_left - cx_right)]
+        # fx * baseline / [(u_left - u_right) - (cx_left - cx_right)]
         temp_left = (left_fx * b / real_left_disp).clamp(min=1e-3, max=500)
         temp_right = (right_fx * b / real_right_disp).clamp(min=1e-3, max=500)
 

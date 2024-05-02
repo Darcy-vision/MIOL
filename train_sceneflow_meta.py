@@ -150,7 +150,6 @@ def train(args, train_loader, disp_net, optimizer, epoch, logger, train_writer):
                                         [ 0.0000,  0.0000,  1.0000,  0.0000],
                                         [ 0.0000,  0.0000,  0.0000,  1.0000]]]).astype(np.float32)).unsqueeze(0).repeat(8, 1, 1, 1)
 
-    # 循环batch
     for i, (tgt_img, ref_img, disp_left, disp_right, mask_L, mask_R) in enumerate(train_loader):
 
         record_idx = epoch * args.epoch_size + i
@@ -212,7 +211,6 @@ def valid(args, val_loader, disp_net, optimizer, epoch, logger, valid_writer):
                                         [ 0.0000,  0.0000,  1.0000,  0.0000],
                                         [ 0.0000,  0.0000,  0.0000,  1.0000]]]).astype(np.float32)).unsqueeze(0).repeat(8, 1, 1, 1)
 
-    # 循环batch
     for i, (tgt_img, ref_img, disp_left, disp_right, mask_L, mask_R) in enumerate(val_loader):
         
         record_idx = epoch * len(val_loader) + i
