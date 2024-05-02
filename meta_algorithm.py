@@ -4,7 +4,6 @@ import torch.nn.functional as F
 import numpy as np
 from utils import tensor2array
 from loss_functions import compute_smooth_loss, photo_and_geometry_loss
-import time
 
 
 def inner_update_MAML(fast_weights, loss, inner_lr):

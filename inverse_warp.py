@@ -266,82 +266,6 @@ def cam2pixel2(cam_coords, proj_c2p_rot, proj_c2p_tr, padding_mode):
     return pixel_coords_norm.reshape(b, h, w, 2), Z.reshape(b, 1, h, w)
 
 
-def inverse_warp2(img, depth, ref_depth, pose, intrinsics, padding_mode='zeros'):
-    """
-    Inverse warp a source image to the target image plane.
-    Args:
-        img: the right image (where to sample pixels) -- [B, 3, H, W]
-        depth: depth map of the left image -- [B, 1, H, W]
-        ref_depth: the right depth map (where to sample depth) -- [B, 1, H, W] 
-        pose: transformation from left to right -- [B, 4, 4]
-        intrinsics: camera intrinsic matrix -- [B, 3, 3]
-    Returns:
-        projected_img: Source image warped to the target image plane
-        valid_mask: Float array indicating point validity
-        projected_depth: sampled depth from source image  
-        computed_depth: computed depth of source image using the target depth
-    """
-    check_sizes(img, 'img', 'B3HW')
-    check_sizes(depth, 'depth', 'B1HW')
-    check_sizes(ref_depth, 'ref_depth', 'B1HW')
-    check_sizes(pose, 'pose', 'B44')
-    check_sizes(intrinsics, 'intrinsics', 'B33')
-
-    batch_size, _, img_height, img_width = img.size()
-
-    cam_coords = pixel2cam(depth.squeeze(1), intrinsics.inverse())  # [B,3,H,W]
-
-    # Get projection matrix for tgt camera frame to source pixel frame
-    proj_cam_to_src_pixel = intrinsics @ pose[:, :3, :]  # [B, 3, 4]
-
-    rot, tr = proj_cam_to_src_pixel[:, :, :3], proj_cam_to_src_pixel[:, :, -1:]
-    src_pixel_coords, computed_depth = cam2pixel2(cam_coords, rot, tr, padding_mode)  # [B,H,W,2]
-    projected_img = F.grid_sample(img, src_pixel_coords, padding_mode=padding_mode, align_corners=False)
-
-    valid_points = src_pixel_coords.abs().max(dim=-1)[0] <= 1
-    valid_mask = valid_points.unsqueeze(1).float()
-
-    projected_depth = F.grid_sample(ref_depth, src_pixel_coords, padding_mode=padding_mode, align_corners=False)
-
-    return projected_img, valid_mask, projected_depth, computed_depth
-
-
-def my_inverse_warp(img, depth, ref_depth, pose, intrinsics, padding_mode='zeros'):
-    """
-    Inverse warp a source image to the target image plane.
-    Args:
-        img: the left image (where to sample pixels) -- [B, 3, H, W]
-        depth: depth map of the right image -- [B, 1, H, W]
-        ref_depth: the left depth map (where to sample depth) -- [B, 1, H, W] 
-        pose: transformation from right to left -- [B, 4, 4]
-        intrinsics: camera intrinsic matrix -- [B, 3, 3]
-    Returns:
-        valid_mask: Float array indicating point validity
-        projected_depth: sampled depth from source image  
-        computed_depth: computed depth of source image using the target depth
-    """
-    check_sizes(img, 'img', 'B3HW')
-    check_sizes(depth, 'depth', 'B1HW')
-    check_sizes(ref_depth, 'ref_depth', 'B1HW')
-    check_sizes(pose, 'pose', 'B44')
-    check_sizes(intrinsics, 'intrinsics', 'B33')
-
-    cam_coords = pixel2cam(depth.squeeze(1), intrinsics.inverse())  # [B,3,H,W]  右图的intrinsics
-
-    # Get projection matrix for tgt camera frame to source pixel frame
-    proj_cam_to_src_pixel = intrinsics @ pose[:, :3, :]  # [B, 3, 4]  左图的intrinsics  pose是右到左
-
-    rot, tr = proj_cam_to_src_pixel[:, :, :3], proj_cam_to_src_pixel[:, :, -1:]
-    src_pixel_coords, computed_depth = cam2pixel2(cam_coords, rot, tr, padding_mode)  # [B,H,W,2]
-    
-    valid_points = src_pixel_coords.abs().max(dim=-1)[0] <= 1
-    valid_mask3d = valid_points.unsqueeze(1).float()
-
-    projected_depth = F.grid_sample(ref_depth, src_pixel_coords, padding_mode=padding_mode, align_corners=False)
-
-    return valid_mask3d, projected_depth, computed_depth
-
-
 def miccai_inverse_warp(img, depth, ref_depth, pose, intrinsics, ref_intrinsics, padding_mode='zeros'):
     """
     Inverse warp a source image to the target image plane.
@@ -363,69 +287,17 @@ def miccai_inverse_warp(img, depth, ref_depth, pose, intrinsics, ref_intrinsics,
     check_sizes(intrinsics, 'intrinsics', 'B33')
     check_sizes(ref_intrinsics, 'ref_intrinsics', 'B33')
 
-    cam_coords = pixel2cam(ref_depth.squeeze(1), ref_intrinsics.inverse())  # [B,3,H,W]  右图的intrinsics
+    cam_coords = pixel2cam(ref_depth.squeeze(1), ref_intrinsics.inverse())  # [B,3,H,W]
 
     # Get projection matrix for tgt camera frame to source pixel frame
-    proj_cam_to_src_pixel = intrinsics @ pose[:, :3, :]  # [B, 3, 4]  左图的intrinsics  pose是右到左
+    proj_cam_to_src_pixel = intrinsics @ pose[:, :3, :]  # [B, 3, 4]
 
     rot, tr = proj_cam_to_src_pixel[:, :, :3], proj_cam_to_src_pixel[:, :, -1:]
     src_pixel_coords_norm, computed_depth = cam2pixel2(cam_coords, rot, tr, padding_mode)  # [B,H,W,2]
     
-    # cam2pixel2 中进行了归一化，正常范围[-1, 1], 取绝对值后保证x,y轴的最大值不超过1
     valid_points = src_pixel_coords_norm.abs().max(dim=-1)[0] <= 1 
     valid_mask3d = valid_points.unsqueeze(1).float()
 
     projected_depth = F.grid_sample(depth, src_pixel_coords_norm, padding_mode=padding_mode, align_corners=False)
 
     return valid_mask3d, projected_depth, computed_depth
-
-
-def mycam2pixel(cam_coords, proj_c2p_rot, proj_c2p_tr, intrinsics, padding_mode):
-    """Transform coordinates in the camera frame to the pixel frame.
-    Args:
-        cam_coords: pointcloud defined in the left camera coordinates system -- [B, 4, H, W]
-        proj_c2p_rot: rotation matrix of cameras -- [B, 3, 4]
-        proj_c2p_tr: translation vectors of cameras -- [B, 3, 1]
-    Returns:
-        array of [-1,1] coordinates -- [B, 2, H, W]
-    """
-    b, _, h, w = cam_coords.size()
-    cam_coords_flat = cam_coords.reshape(b, 3, -1)  # [B, 3, H*W]
-    if proj_c2p_rot is not None:
-        pcoords = proj_c2p_rot @ cam_coords_flat
-    else:
-        pcoords = cam_coords_flat
-
-    if proj_c2p_tr is not None:
-        pcoords = pcoords + proj_c2p_tr  # [B, 3, H*W]
-
-    Z = pcoords[:, 2].clamp(min=1e-3)
-
-    return Z.reshape(b, 1, h, w)
-
-def get_opposite_depth(img, depth, pose, intrinsics, padding_mode='zeros'):
-    """
-    Inverse warp a source image to the target image plane.
-    Args:
-        img: the right image (where to sample pixels) -- [B, 3, H, W]
-        depth: depth map of the left image -- [B, 1, H, W]
-        pose: transformation from left to right -- [B, 4, 4]
-        intrinsics: camera intrinsic matrix -- [B, 3, 3]
-    Returns:
-        valid_mask: Float array indicating point validity
-        computed_depth: computed depth of source image using the target depth
-    """
-    check_sizes(img, 'img', 'B3HW')
-    check_sizes(depth, 'depth', 'B1HW')
-    check_sizes(pose, 'pose', 'B44')
-    check_sizes(intrinsics, 'intrinsics', 'B33')
-
-    cam_coords = pixel2cam(depth.squeeze(1), intrinsics.inverse())  # [B,3,H,W]
-
-    # Get projection matrix for tgt camera frame to source pixel frame
-    proj_cam_to_src_pixel = intrinsics @ pose[:, :3, :]  # [B, 3, 4]
-
-    rot, tr = proj_cam_to_src_pixel[:, :, :3], proj_cam_to_src_pixel[:, :, -1:]
-    computed_depth = mycam2pixel(cam_coords, rot, tr, intrinsics, padding_mode)  # [B,H,W,2]
-
-    return computed_depth
