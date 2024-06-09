@@ -1,6 +1,6 @@
 # Real-Time and High-Accuracy Switchable Stereo Depth Estimation Method Utilizing Self-Supervised Online Learning Mechanism for MIS
 
-This repository contains the source code for our paper.
+This repository contains the source code for our paper which has been accepted by IEEE Transactions on Instrumentation and Measurement.
 
 ## :floppy_disk: Data Description
 
