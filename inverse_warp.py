@@ -18,8 +18,8 @@ def set_id_grid(depth):
 
 def synthetize_newImage(img2_colors, disps, mode, padding_mode='zeros'):
     """
-    mode = 0, 通过左图坐标网格(img1_colors) - 视差图来采样右视图(img2)，重建左视图; depth2cam为左图对应在右图的坐标
-    mode = 1, 通过右图坐标网格(img1_colors) + 视差图来采样左视图(img2)，重建右视图
+    mode = 0, reconstruct left
+    mode = 1, reconstruct right
     """
 
     b, _, h, w = disps.size()
