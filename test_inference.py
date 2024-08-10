@@ -61,9 +61,9 @@ def depth_visualizer(data):
 
 def cal_LK(left_img_rgb, right_img_rgb, intrinsics, scale, downsample):
     """
-    left_img_rgb:左图
-    right_img_rgb:右图
-    intrinsics: [list] 左内参+右内参
+    left_img_rgb
+    right_img_rgb
+    intrinsics: [list] left + right
     """
 
     h, w, c = left_img_rgb.shape
