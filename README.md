@@ -99,5 +99,6 @@ If you find this code useful for your research, please use the following BibTeX 
   title={Real-Time and High-Accuracy Switchable Stereo Depth Estimation Method Utilizing Self-Supervised Online Learning Mechanism for MIS}, 
   year={2024},
   volume={73},
-  pages={1-13}}
+  pages={1-13}
+}
 ```
