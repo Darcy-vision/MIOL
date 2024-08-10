@@ -89,3 +89,15 @@ Our code is based on the excellent works of [SC-SfMLearner](https://github.com/J
 
 ## License
 For academic usage, the code is released under the permissive MIT license. Our intension of sharing the project is for research/personal purpose. For any commercial purpose, please contact the authors.
+
+## Citation
+If you find this code useful for your research, please use the following BibTeX entries:
+```bibtex
+@article{zheng2024MIOL,
+  author={Zheng, Jieyu and Li, Xiaojian and Wang, Xin and Wu, Haojun and Li, Ling and Ma, Xiang and Yang, Shanlin},
+  journal={IEEE Transactions on Instrumentation and Measurement}, 
+  title={Real-Time and High-Accuracy Switchable Stereo Depth Estimation Method Utilizing Self-Supervised Online Learning Mechanism for MIS}, 
+  year={2024},
+  volume={73},
+  pages={1-13}}
+```
