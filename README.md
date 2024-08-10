@@ -1,6 +1,10 @@
-# Real-Time and High-Accuracy Switchable Stereo Depth Estimation Method Utilizing Self-Supervised Online Learning Mechanism for MIS
+# Offical Code Implementation for MIOL in 3D laparoscopy
 
-This repository contains the source code for our paper which has been accepted by IEEE Transactions on Instrumentation and Measurement.
+> Real-Time and High-Accuracy Switchable Stereo Depth Estimation Method Utilizing Self-Supervised Online Learning Mechanism for MIS. \
+> Jieyu Zheng, Xiaojian Li*, Xin Wang*, Haojun Wu, Ling Li, Xiang Ma, Shanlin Yang
+
+<a href="https://github.com/Darcy-vision/MIOL"> <img alt="Github Repository" src="https://img.shields.io/badge/Github-Repository-blue?logo=github&logoColor=blue"> </a>
+<a href="https://ieeexplore.ieee.org/document/10623422"> <img alt="Paper" src="https://img.shields.io/badge/IEEE-Paper-red?logo=arxiv&logoColor=red"> </a>
 
 ## :floppy_disk: Data Description
 
